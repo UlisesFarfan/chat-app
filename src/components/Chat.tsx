@@ -1,13 +1,12 @@
 import { AiOutlineArrowLeft, AiOutlineSend } from 'react-icons/ai'
 import Message from './Message'
 import InputMessage from './Inputs/InputMessage'
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
 import { useMessageText } from '../hooks/useValidFormik';
 import { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { getChatsById, postMessage } from '../redux/async/chatsAsync';
+import { postMessage } from '../redux/async/chatsAsync';
 import { chatName, chatWho, chatOtherUser } from '../utils/utils';
+import { PropsMessage } from "../interfaces/Chat/chat.interface";
 import Loading from './Loading';
 
 export default function Chat() {
@@ -21,16 +20,11 @@ export default function Chat() {
     text: ""
   });
 
-  const { id } = useParams()
   const dispatch = useAppDispatch();
   const chat = useAppSelector(state => state.chat.currentChat)
-  const user = useAppSelector(state => state.auth.authUser)
+  const auth = useAppSelector(state => state.auth)
   const socket = useAppSelector(state => state.socket.socketIo)
   const scrollRef = useRef<any>()
-
-  useEffect(() => {
-    dispatch(getChatsById(id!))
-  }, [id])
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -38,26 +32,33 @@ export default function Chat() {
 
   const handleSubmitMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const message = {
+    const message: PropsMessage = {
       message: values.text,
-      user: user._id,
+      user: auth.authUser._id,
       chatId: chat._id
     }
     setValues({
       text: ""
     })
-    dispatch(postMessage(message))
+    //    if (values.text === "") return;
+    socket.emit("sendMessage", {
+      message: values.text,
+      user: auth.authUser._id,
+      chatId: chat._id,
+      otherUser: chatOtherUser(chat.users, auth.authUser)
+    })
+    dispatch(postMessage({ headers: auth.accessToken, body: message }))
   };
 
   return (
     <div className="flex flex-col w-full">
-      <div className="border-b flex justify-between items-center w-full px-5 py-2 shadow-sm">
+      <div className="border-b flex justify-between items-center w-full px-5 py-2 h-16 shadow-sm">
         <div className="flex items-center">
           <AiOutlineArrowLeft className="h-6 w-6 text-slate-400" />
           {/* <img className="h-10 w-10 overflow-hidden rounded-full"
             src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=60&raw_url=true&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnN8ZW58MHwyfDB8fA%3D%3D&auto=format&fit=crop&w=500"
             alt="" /> */}
-          <p className="font-semibold ml-3 text-slate-600">{chat && chatName(chat.users, user)}</p>
+          <p className="font-semibold ml-3 text-slate-600">{chat && chatName(chat.users, auth.authUser)}</p>
         </div>
         <div className="flex items-center space-x-5">
           <svg xmlns="http://www.w3.org/2000/svg"
@@ -76,7 +77,13 @@ export default function Chat() {
       <div className="px-10 py-4 h-full overflow-y-auto">
         {
           chat ?
-          <Loading />
+            chat.messagesId.map((el: any, index: number) => {
+              return (
+                <div ref={scrollRef} key={index}>
+                  <Message message={el.message} user={chatWho(el.user, auth.authUser, chatName(chat.users, auth.authUser))} />
+                </div>
+              )
+            })
             :
             <Loading />
         }
@@ -90,14 +97,7 @@ export default function Chat() {
             onChange={handleChange}
             initialValue={values?.text ? values?.text : ""}
           />
-          <button type='submit' onClick={() => {
-            socket.emit("sendMessage", {
-              message: values.text,
-              user: user._id,
-              chatId: chat._id,
-              otherUser: chatOtherUser(chat.users, user)
-            })
-          }}>
+          <button type='submit'>
             <AiOutlineSend className="h-8 w-8 text-slate-500" />
           </button>
         </div>

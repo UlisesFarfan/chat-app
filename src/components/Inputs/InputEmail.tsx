@@ -1,23 +1,6 @@
-import React, { ChangeEvent } from "react";
 import Helper from "../Helper";
 import Label from "../Label";
-import { formikError } from "../../interfaces/formik/formik";
-
-interface InputEmailProps {
-  className?: string;
-  disabled?: boolean;
-  helper?: formikError;
-  onBlur?: {
-    (e: React.FocusEvent<any, Element>): void;
-    <T = any>(fieldOrEvent: T): T extends string ? (e: any) => void : void;
-  };
-  onChange: (e: ChangeEvent<any>) => void;
-  id: string;
-  initialValue?: string;
-  label?: string;
-  placeholder?: string;
-  readonly?: boolean;
-}
+import { InputGnrlProps } from "../../interfaces/Inputs/inputs.interface";
 
 function InputEmail({
   className,
@@ -30,7 +13,7 @@ function InputEmail({
   label,
   placeholder,
   readonly,
-}: InputEmailProps) {
+}: InputGnrlProps) {
   return (
     <div className="flex flex-col items-start w-full relative">
       {label && <Label content={label} htmlFor={id} />}

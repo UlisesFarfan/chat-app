@@ -1,10 +1,15 @@
-import { useAppSelector, useAppDispatch } from "../hooks/useRedux"
 import { useLocation } from "react-router-dom"
 import { MdNotificationsActive } from "react-icons/md"
 
-export default function MessageContact({ name, index, newMessage, online }: any) {
+export default function ChatListItem({ name, index, newMessage, online }: any) {
 
   const indexChat = useLocation()
+
+  //onContextMenuCapture={(e) => handle(e)}
+  const handle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.preventDefault()
+    console.log(e)
+  }
 
   return (
     <div key={index}
@@ -14,6 +19,7 @@ export default function MessageContact({ name, index, newMessage, online }: any)
         :
         "px-1 py-4 justify-between  flex items-center cursor-pointer border-l-4 border-l-transparent hover:bg-slate-100"
         }`}
+      onContextMenuCapture={(e) => handle(e)}
     >
       <div className="flex items-center w-full justify-between mx-4">
         <p x-text={name} className={`${indexChat.pathname.includes(index)

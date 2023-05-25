@@ -1,15 +1,17 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { PropsGet, PropsMessage, PropsPostMessage } from "../../interfaces/Chat/chat.interface";
 
 export const getAllChatsByUserId = createAsyncThunk(
   "getAllChatsByUserId",
-  async (userId: string, thunkApi) => {
+  async ({ headers, id }: PropsGet, thunkApi) => {
     try {
       const { data } = await axios({
         method: "GET",
-        url: import.meta.env.VITE_API_ENDPOINT + `/chat/user/${userId}`,
+        url: import.meta.env.VITE_API_ENDPOINT + `/chat/user/${id}`,
         headers: {
           Accept: "application/json",
+          Authorization: `Bearer ${headers}`
         }
       });
       return data
@@ -21,13 +23,14 @@ export const getAllChatsByUserId = createAsyncThunk(
 
 export const getChatsById = createAsyncThunk(
   "getChatsById",
-  async (chatId: string, thunkApi) => {
+  async ({ headers, id }: PropsGet, thunkApi) => {
     try {
       const { data } = await axios({
         method: "GET",
-        url: import.meta.env.VITE_API_ENDPOINT + `/chat/${chatId}`,
+        url: import.meta.env.VITE_API_ENDPOINT + `/chat/${id}`,
         headers: {
           Accept: "application/json",
+          Authorization: `Bearer ${headers}`
         }
       });
       return data
@@ -39,13 +42,14 @@ export const getChatsById = createAsyncThunk(
 
 export const postMessage = createAsyncThunk(
   "postMessage",
-  async (body: any, thunkApi) => {
+  async ({ headers, body }: PropsPostMessage, thunkApi) => {
     try {
       const { data } = await axios({
         method: "POST",
         url: import.meta.env.VITE_API_ENDPOINT + "/message",
         headers: {
           Accept: "application/json",
+          Authorization: `Bearer ${headers}`
         },
         data: body
       });
@@ -58,7 +62,7 @@ export const postMessage = createAsyncThunk(
 
 export const resiveAMessage = createAsyncThunk(
   "resiveAMessage",
-  async (message: any, thunkApi) => {
+  async (message: PropsMessage, thunkApi) => {
     try {
       return message
     } catch (error: any) {

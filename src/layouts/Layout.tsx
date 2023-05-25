@@ -4,6 +4,7 @@ import {
   Bars3CenterLeftIcon,
   XMarkIcon,
   ChevronDownIcon,
+  HomeIcon
 } from "@heroicons/react/24/outline";
 import { Outlet } from 'react-router-dom'
 import { TbMessages } from "react-icons/tb";
@@ -14,6 +15,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
 import { LogoutAsync } from '../redux/async/authAsync'
 import { useLocation } from "react-router-dom";
 import { logoutSocket } from "../redux/async/socketAsync";
+import { Toaster } from "react-hot-toast";
 
 function classNames(...classes: String[]) {
   return classes.filter(Boolean).join(" ");
@@ -25,23 +27,33 @@ export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [navigation, setNavigation] = useState([
     {
-      name: "Messages",
-      href: "/messages",
+      name: "Dashboard",
+      href: "/",
+      icon: HomeIcon,
+      current: false,
+    },
+    {
+      name: "Chats",
+      href: "/chats",
       icon: TbMessages,
       current: false,
-      url: "messages"
     },
     {
       name: "Contact",
       href: "/contacts",
       icon: FaUsers,
       current: false,
-      url: "contacts"
     }
   ]);
   useEffect(() => {
     let activeNav = navigation.map((el) =>
-      params.pathname.includes(el.url) ? { ...el, current: true } : { ...el, current: false }
+      params.pathname.length > 1 ?
+        params.pathname.includes(el.href) && el.href.length > 1
+          ? { ...el, current: true }
+          : { ...el, current: false }
+        : params.pathname.includes(el.href)
+          ? { ...el, current: true }
+          : { ...el, current: false }
     );
     setNavigation(activeNav);
   }, [params]);
@@ -57,6 +69,10 @@ export default function Layout() {
   return (
     <>
       <div className="flex flex-col h-screen">
+        <Toaster
+          position="bottom-right"
+
+        />
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
             as="div"
@@ -192,7 +208,7 @@ export default function Layout() {
                 ))}
               </div>
               <NavLink to="/aboutme" className="w-full flex items-center text-base font-medium gap-2 text-center border py-2 justify-center text-gray-500 hover:bg-gray-50 hover:text-gray-600">
-                ABOUT ME<AiOutlineQuestionCircle/>
+                ABOUT ME<AiOutlineQuestionCircle />
               </NavLink>
             </nav>
           </div>
@@ -214,7 +230,7 @@ export default function Layout() {
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>
-                    <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 lg:rounded-md lg:p-2 lg:hover:bg-gray-50">
+                    <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm focus:ring-offset-2 lg:rounded-md lg:p-2 lg:hover:bg-gray-50">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"

@@ -1,29 +1,9 @@
-import React, { useState, ChangeEvent } from "react";
+import { useState } from "react";
 import Label from "../Label";
-// import "./Icon";
-//import Icon from "./Icon";
-import { formikError } from "../../interfaces/formik/formik";
 import PasswordStrengthBar from "react-password-strength-bar";
 import Helper from "../Helper";
-import {AiOutlineEye, AiOutlineEyeInvisible} from "react-icons/ai";
-
-interface InputPasswordProps {
-  className?: string;
-  disabled?: boolean;
-  helper?: formikError;
-  onBlur?: {
-    (e: React.FocusEvent<any, Element>): void;
-    <T = any>(fieldOrEvent: T): T extends string ? (e: any) => void : void;
-  };
-  onChange?: (e: ChangeEvent<any>) => void;
-  onChangeScore?: (score: number) => void;
-  id: string;
-  initialValue?: string;
-  label?: string;
-  placeholder: string;
-  readOnly?: boolean;
-  showStrengthBar?: boolean;
-}
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { InputPasswordProps } from "../../interfaces/Inputs/inputs.interface";
 
 function InputPassword({
   className,
@@ -48,14 +28,12 @@ function InputPassword({
     <div className="flex flex-col items-stretch relative">
       {label && <Label content={label} htmlFor={id} />}
       <div
-        className={`items-start w-full ${
-          className?.includes("is-invalid") ? "is-invalid" : ""
-        }`}
+        className={`items-start w-full ${className?.includes("is-invalid") ? "is-invalid" : ""
+          }`}
       >
         <div
-          className={`flex items-center justify-center${
-            className?.includes("is-invalid") ? "text-red-600" : ""
-          }`}
+          className={`flex items-center justify-center${className?.includes("is-invalid") ? "text-red-600" : ""
+            }`}
         >
           <input
             onBlur={onBlur ? onBlur : undefined}
@@ -69,8 +47,8 @@ function InputPassword({
             className="flex items-center justify-center w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             tabIndex={
               (className?.match(/readonly-textplain/) && readOnly === true) ||
-              readOnly === true ||
-              disabled === true
+                readOnly === true ||
+                disabled === true
                 ? -1
                 : 0
             }

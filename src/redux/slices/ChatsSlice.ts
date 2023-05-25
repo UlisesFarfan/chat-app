@@ -15,7 +15,11 @@ const initialState: HistorySliceState = {
 export const historySlice = createSlice({
   name: "chats",
   initialState,
-  reducers: {},
+  reducers: {
+    clearCurrentChat(state){
+      state.currentChat = null
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(
       getAllChatsByUserId.fulfilled,

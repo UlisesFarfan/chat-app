@@ -23,7 +23,7 @@ function App() {
         <Route element={<AuthenticatedMiddleware />}>
           <Route element={<SocketIoMiddleware />}>
             <Route element={<Layout />}>
-              <Route path="/messages" element={<Message />}>
+              <Route path="/chats" element={<Message />}>
                 <Route path=":id" element={<Chat />} />
               </Route>
               <Route path="/contacts" element={<Contacts />} />

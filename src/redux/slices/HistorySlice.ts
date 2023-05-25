@@ -10,7 +10,7 @@ const initialState: HistorySliceState = {
   rootLocation: null,
 };
 
-export const historySlice = createSlice({
+export const historySlice: any = createSlice({
   name: "history",
   initialState,
   reducers: {},

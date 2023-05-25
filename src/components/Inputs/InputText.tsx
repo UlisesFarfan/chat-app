@@ -1,28 +1,5 @@
-import React, {
-  ChangeEvent,
-  ChangeEventHandler,
-  ReactElement,
-  useRef,
-} from "react";
-import { formikError } from "../../hooks/useValidFormik";
-import Helper from "../Helper";
-import Label from "../Label";
-
-interface InputTextProps {
-  className?: string;
-  disabled?: boolean;
-  helper?: formikError;
-  id: string;
-  initialValue?: string;
-  onBlur?: {
-    (e: React.FocusEvent<any, Element>): void;
-    <T = any>(fieldOrEvent: T): T extends string ? (e: any) => void : void;
-  };
-  onChange: ChangeEventHandler<HTMLInputElement>;
-  label?: string;
-  placeholder?: string;
-  readonly?: boolean;
-}
+import { ReactElement } from "react"
+import { InputTextProps } from "../../interfaces/Inputs/inputs.interface";
 
 function InputText({
   className,
@@ -37,29 +14,19 @@ function InputText({
   readonly,
 }: InputTextProps): ReactElement {
   return (
-    <div className="input-text-container relative">
-      {label && <Label content={label} htmlFor={id} />}
+    <div className="w-full px-2">
       <input
         type="text"
         placeholder={placeholder}
         pattern="\S+.*"
-        required
         id={id}
         onBlur={onBlur ? onBlur : undefined}
         onChange={onChange}
         disabled={disabled ? disabled : false}
         readOnly={readonly ? readonly : false}
         value={initialValue}
-        className={className ? className : ""}
-        tabIndex={
-          (className?.match(/readonly-text-plain/) && readonly === true) ||
-          readonly === true ||
-          disabled === true
-            ? -1
-            : 0
-        }
+        className="w-full px-3 bg-transparent outline-none placeholder:text-slate-400"
       />
-      {helper && <Helper helper={helper} />}
     </div>
   );
 }

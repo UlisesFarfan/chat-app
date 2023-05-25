@@ -6,7 +6,7 @@ export default function Message({
   if (user !== "Me") {
     return (
       <div className="w-full flex flex-start">
-        <div className="w-1/2">
+        <div className="max-w-1/2">
           <div className="flex items-center">
             {/* <img className="h-5 w-5 overflow-hidden rounded-full"
             src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=60&raw_url=true&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnN8ZW58MHwyfDB8fA%3D%3D&auto=format&fit=crop&w=500"
@@ -15,7 +15,7 @@ export default function Message({
           </div>
 
           <div className="mt-3 max-w-max bg-slate-50 p-4 rounded-b-xl rounded-tr-xl">
-            <p className="text-sm text-slate-900">
+            <p className="text-sm text-slate-900 break-all">
               {message}
             </p>
           </div>
@@ -25,7 +25,7 @@ export default function Message({
   } else {
     return (
       <div className="w-full flex justify-end mt-3">
-        <div className="w-1/2 ">
+        <div className="max-w-1/2">
           <div className="flex items-center justify-end">
             <p className="font-semibold mr-3 text-sm text-slate-600">{user}</p>
             {/* <img className="h-5 w-5 overflow-hidden rounded-full"
@@ -34,7 +34,7 @@ export default function Message({
           </div>
           <div className="flex items-center justify-end">
             <div className="mt-3 max-w-max justify-end bg-blue-500 p-4 rounded-b-xl rounded-tl-xl">
-              <p className="text-sm text-white">
+              <p className="text-sm text-white break-all">
                 {message}
               </p>
             </div>

@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { formikError } from "../interfaces/formik/formik";
+import { formikError } from "../interfaces/formik/formik.interface";
 
 interface PropsHelper {
   helper: formikError;

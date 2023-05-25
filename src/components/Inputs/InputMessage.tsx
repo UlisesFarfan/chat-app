@@ -1,22 +1,4 @@
-import React, { ChangeEvent } from "react";
-import { formikError } from "../../interfaces/formik/formik";
-import { AiOutlineSend } from "react-icons/ai";
-
-interface InputEmailProps {
-  className?: string;
-  disabled?: boolean;
-  helper?: formikError;
-  onBlur?: {
-    (e: React.FocusEvent<any, Element>): void;
-    <T = any>(fieldOrEvent: T): T extends string ? (e: any) => void : void;
-  };
-  onChange: (e: ChangeEvent<any>) => void;
-  id: string;
-  initialValue?: string;
-  label?: string;
-  placeholder?: string;
-  readonly?: boolean;
-}
+import { InputGnrlProps } from "../../interfaces/Inputs/inputs.interface";
 
 export default function InputMessage({
   className,
@@ -29,7 +11,7 @@ export default function InputMessage({
   label,
   placeholder,
   readonly,
-}: InputEmailProps) {
+}: InputGnrlProps) {
   return (
     <div className="w-full pr-3">
         <input
