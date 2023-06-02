@@ -1,6 +1,7 @@
 import { NavLink, Outlet } from "react-router-dom";
 import ChatListItem from "../components/ChatListItem";
-import { clearUserChat, getChatsById } from "../redux/async/chatsAsync";
+import { getChatsById } from "../redux/async/chatsAsync";
+import { clearCurrentChat } from "../redux/slices/ChatsSlice";
 import { useAppSelector, useAppDispatch } from "../hooks/useRedux";
 import { useEffect } from "react";
 import { getAllChatsByUserId } from "../redux/async/chatsAsync";
@@ -19,37 +20,29 @@ export default function Message() {
     dispatch(getAllChatsByUserId({ headers: auth.accessToken, id: auth.authUser._id }))
   }, [])
 
-  const ResetChat = () => {
-    dispatch(clearUserChat())
-  }
-
   const hableChatSelect = (el: Chat) => {
-    ResetChat()
+    dispatch(clearCurrentChat())
     dispatch(getChatsById({ headers: auth.accessToken, id: el._id }))
   }
 
   return (
     <div className="h-full flex lg:ml-52">
       <div className="flex flex-col w-80 bg-slate-50 border-r">
-        <ChatListHeader />
+        <ChatListHeader headers={auth.accessToken} id={auth.authUser._id} />
         {chats ? chats?.map((el: Chat, index: number) =>
           auth.authUser._id === el._id ?
             null
             :
-            <NavLink
-              to={`/chats/${el._id}`}
-              key={index}
+            <ChatListItem
+              name={chatName(el.users, auth.authUser)}
+              index={el._id}
+              online={false}
+              newMessage={el.messageToView}
               onClick={() => {
                 hableChatSelect(el)
               }}
-            >
-              <ChatListItem
-                name={chatName(el.users, auth.authUser)}
-                index={el._id}
-                online={false}
-                newMessage={el.messageToView}
-              />
-            </NavLink>
+              key={index}
+            />
         )
           :
           <div className="mt-10 flex items-center justify-center">

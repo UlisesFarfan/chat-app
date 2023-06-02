@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AuthState } from "../interfaces/authSlice.interface";
+import { AuthState } from "../../interfaces/Auth/authSlice.interface";
 import {
   LoginAsync,
   LogoutAsync,

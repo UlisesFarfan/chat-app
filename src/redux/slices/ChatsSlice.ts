@@ -1,41 +1,33 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
-import { clearUserChat, getAllChatsByUserId, getChatsById, postMessage, resiveAMessage } from "../async/chatsAsync";
+import { getAllChatsByUserId, getChatsById, postMessage, resiveAMessage } from "../async/chatsAsync";
 
-interface HistorySliceState {
+interface ChatSliceState {
   chats: any;
   currentChat: Array<Object> | null;
 }
 
-const initialState: HistorySliceState = {
+const initialState: ChatSliceState = {
   chats: null,
   currentChat: null,
 };
 
-export const historySlice = createSlice({
+export const chatSlice = createSlice({
   name: "chats",
   initialState,
   reducers: {
-    clearCurrentChat(state){
+    clearCurrentChat(state) {
       state.currentChat = null
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(
-      getAllChatsByUserId.fulfilled,
+    builder.addCase(getAllChatsByUserId.fulfilled,
       (state: any, action: PayloadAction<any>) => {
         state.chats = action.payload
       }
     );
-    builder.addCase(
-      clearUserChat.fulfilled,
-      (state: HistorySliceState, action: PayloadAction<any>) => {
-        state.currentChat = null
-      }
-    );
-    builder.addCase(
-      getChatsById.fulfilled,
-      (state: HistorySliceState, action: PayloadAction<any>) => {
+    builder.addCase(getChatsById.fulfilled,
+      (state: ChatSliceState, action: PayloadAction<any>) => {
         state.currentChat = action.payload
         let array = [...state.chats]
         for (let i = 0; i < array.length; i++) {
@@ -46,23 +38,23 @@ export const historySlice = createSlice({
         state.chats = array
       }
     );
-    builder.addCase(
-      postMessage.fulfilled,
-      (state: HistorySliceState, action: PayloadAction<any>) => {
+    builder.addCase(postMessage.fulfilled,
+      (state: ChatSliceState, action: PayloadAction<any>) => {
         let addMessage: any = state.currentChat!
         addMessage.messagesId?.push(action.payload.message)
         state.currentChat = addMessage
       }
     );
-    builder.addCase(
-      resiveAMessage.fulfilled,
-      (state: HistorySliceState, action: PayloadAction<any>) => {
+    builder.addCase(resiveAMessage.fulfilled,
+      (state: ChatSliceState, action: PayloadAction<any>) => {
         let addMessage: any = state.currentChat!
-        addMessage.messagesId?.push(action.payload)
-        state.currentChat = addMessage
+        if (addMessage._id === action.payload.chatId) addMessage.messagesId?.push(action.payload);
+        state.currentChat = addMessage;
       }
     );
   },
 });
 
-export default historySlice.reducer;
+export const { clearCurrentChat } = chatSlice.actions;
+
+export default chatSlice.reducer;

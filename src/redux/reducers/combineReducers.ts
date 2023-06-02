@@ -3,6 +3,7 @@ import AuthSlice from "../slices/AuthenticationSlice";
 import HistorySlice from "../slices/HistorySlice";
 import SocketIo from "../slices/SocketIo";
 import Chat from "../slices/ChatsSlice"
+import FriendsSlice from "../slices/FriendsSlice";
 
 export type StateGlobalType = {
 };
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   auth: AuthSlice,
   history: HistorySlice,
   socket: SocketIo,
-  chat: Chat
+  chat: Chat,
+  social: FriendsSlice,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

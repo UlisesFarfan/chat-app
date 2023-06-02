@@ -1,3 +1,5 @@
+import { RefObject, useEffect } from "react"
+
 const chatName = (users: any, user: any) => {
   let nameChat = ""
   users.forEach((el: any) => {
@@ -25,5 +27,6 @@ const chatOtherUser = (users: any, user: any) => {
   })
   return nameChat
 }
+
 
 export { chatName, chatWho, chatOtherUser }

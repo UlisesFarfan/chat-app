@@ -15,8 +15,7 @@ export const historySlice: any = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(
-      setRootLocation.fulfilled,
+    builder.addCase(setRootLocation.fulfilled,
       (state: any, action: PayloadAction<any>) => {
         state.rootLocation = action.payload;
       }

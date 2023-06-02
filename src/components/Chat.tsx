@@ -44,6 +44,7 @@ export default function Chat() {
     socket.emit("sendMessage", {
       message: values.text,
       user: auth.authUser._id,
+      name: auth.authUser.name,
       chatId: chat._id,
       otherUser: chatOtherUser(chat.users, auth.authUser)
     })

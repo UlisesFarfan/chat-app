@@ -1,6 +1,5 @@
 import { useFormik, FormikErrors } from "formik";
 import * as yup from "yup";
-import "yup-phone";
 
 export type formikError =
   | string[]

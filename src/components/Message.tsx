@@ -1,7 +1,9 @@
+import { MessageProps } from "../interfaces/Chat/chat.interface"
+
 export default function Message({
   message,
   user,
-}: any) {
+}: MessageProps) {
 
   if (user !== "Me") {
     return (
@@ -33,7 +35,7 @@ export default function Message({
               alt="" /> */}
           </div>
           <div className="flex items-center justify-end">
-            <div className="mt-3 max-w-max justify-end bg-blue-500 p-4 rounded-b-xl rounded-tl-xl">
+            <div className="mt-3 max-w-max justify-end bg-indigo-500 p-4 rounded-b-xl rounded-tl-xl">
               <p className="text-sm text-white break-all">
                 {message}
               </p>

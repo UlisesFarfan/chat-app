@@ -4,7 +4,7 @@ import { useText } from "../hooks/useValidFormik";
 import { BsSearch } from "react-icons/bs";
 import { Search } from "../interfaces/Search/search.interface";
 
-export default function SearchChat({ type }: Search) {
+export default function SearchChat({ type, placeholder }: Search) {
 
   const {
     values,
@@ -15,11 +15,18 @@ export default function SearchChat({ type }: Search) {
     text: ""
   });
 
+  const handleSubmit = (e: React.MouseEvent<HTMLFormElement, MouseEvent>) => {
+    e.preventDefault()
+  }
+
   return (
-    <form className="w-full h-full pr-3 flex justify-between items-center border border-transparent bg-slate-50 focus-within:border-slate-300 hover:border-slate-300 rounded-lg">
+    <form
+      className="w-full h-full pr-3 flex justify-between items-center border border-transparent bg-slate-100 focus-within:border-slate-300 hover:border-slate-300 rounded-lg"
+      onClick={(e) => handleSubmit(e)}
+    >
       <InputText
         id="text"
-        placeholder="Search..."
+        placeholder={placeholder}
         onBlur={handleBlur}
         onChange={handleChange}
         initialValue={values?.text ? values?.text : ""}

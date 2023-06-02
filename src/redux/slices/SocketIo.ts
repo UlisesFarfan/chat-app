@@ -15,7 +15,7 @@ const initialState: SocketSliceState = {
   userChat: null,
 };
 
-export const socketIo = createSlice({
+export const socketIo: any = createSlice({
   name: "socket",
   initialState,
   reducers: {},
@@ -32,14 +32,12 @@ export const socketIo = createSlice({
     //     state.socketIo.emit("getAllUsersConect", action.payload)
     //   }
     // );
-    builder.addCase(
-      UpdateUsersConects.fulfilled,
+    builder.addCase(UpdateUsersConects.fulfilled,
       (state: SocketSliceState, action: PayloadAction<any>) => {
         state.socketIoUsers = action.payload
       }
     );
-    builder.addCase(
-      logoutSocket.fulfilled,
+    builder.addCase(logoutSocket.fulfilled,
       (state: SocketSliceState, action: PayloadAction<any>) => {
         state.socketIo.emit("logout", action.payload)
       }

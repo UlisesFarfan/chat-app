@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { PropsGet, PropsMessage, PropsPostMessage } from "../../interfaces/Chat/chat.interface";
+import { PropsMessage, PropsPostMessage } from "../../interfaces/Chat/chat.interface";
+import { PropsGet } from "../../interfaces/get";
 
 export const getAllChatsByUserId = createAsyncThunk(
   "getAllChatsByUserId",
@@ -67,16 +68,6 @@ export const resiveAMessage = createAsyncThunk(
       return message
     } catch (error: any) {
       throw thunkApi.rejectWithValue(error.message);
-    }
-  }
-);
-
-export const clearUserChat = createAsyncThunk(
-  "clearUserChat",
-  async () => {
-    try {
-      return
-    } catch (e) {
     }
   }
 );

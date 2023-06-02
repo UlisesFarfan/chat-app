@@ -13,6 +13,7 @@ import Contacts from './views/Contacts'
 import Dashboard from './views/Dashboard'
 import SocketIoMiddleware from './middlewares/SocketIoMiddleware'
 import Register from './views/authviews/Register'
+import Profile from './components/Profile'
 
 function App() {
 
@@ -27,7 +28,7 @@ function App() {
                 <Route path=":id" element={<Chat />} />
               </Route>
               <Route path="/contacts" element={<Contacts />} />
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/" element={<Profile />} />
             </Route>
           </Route>
         </Route>

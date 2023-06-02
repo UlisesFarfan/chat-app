@@ -1,8 +1,9 @@
 export enum SearchType {
-CHAT,
-CONTACT,
+  CHAT,
+  CONTACT,
 }
 
 export interface Search {
   type: SearchType;
+  placeholder: string;
 }
