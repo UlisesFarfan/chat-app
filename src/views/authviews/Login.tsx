@@ -68,12 +68,14 @@ export default function Login() {
         <div className="flex items-center justify-between">
           <Buttons
             type="button"
+            id="register"
             buttonType="secondary"
             onClick={() => navigate("/register")}
             text="Register"
           />
           <Buttons
             type="submit"
+            id="submit"
             buttonType="primary"
             disabled={isSubmitting || !isValid() || values.email === "" || values.password === ""}
             text="Sign In"
