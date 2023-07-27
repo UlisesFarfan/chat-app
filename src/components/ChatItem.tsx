@@ -2,17 +2,19 @@ import { NavLink, useLocation } from "react-router-dom"
 import { MdNotificationsActive } from "react-icons/md"
 import { useState } from "react"
 import ContextMenu from "./ContextMenu";
-import { ContextProps, ChatItem } from "../interfaces/Chat/chat.interface";
+import { ContextProps, ChatItemProps } from "../interfaces/Chat/chat.interface";
+import { useAppSelector } from "../hooks/useRedux";
 
 const initialValue = { x: 0, y: 0, show: false }
 
-export default function ChatListItem({ name, index, newMessage, online, onClick }: ChatItem) {
+export default function ChatItem({ name, index, newMessage, online, onClick }: ChatItemProps) {
 
   const indexChat = useLocation();
   const [contextMenu, setContextMenu] = useState<ContextProps>(initialValue);
+  const currentChat = useAppSelector(state => state.chat.currentChat)
 
   //onContextMenuCapture={(e) => handle(e)}
-  const handleContext = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  const handleContext = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault()
     const { pageX, pageY } = e
     setContextMenu({ x: pageX, y: pageY, show: true })
@@ -22,10 +24,9 @@ export default function ChatListItem({ name, index, newMessage, online, onClick 
 
   return (
     <>
-      <NavLink
-        to={`/chats/${index}`}
+      <div
         key={index}
-        className={`${indexChat.pathname.includes(index)
+        className={`${currentChat?._id === index
           ?
           "px-1 py-4 relative justify-between flex items-center bg-white cursor-pointer border-l-4 border-l-indigo-500 border-t border-b"
           :
@@ -49,18 +50,19 @@ export default function ChatListItem({ name, index, newMessage, online, onClick 
             {online ? <div className="h-3 w-3 bg-green-400 rounded-full" /> : <div />}
           </div>
         </div>
-      </NavLink>
-      {contextMenu.show &&
+      </div>
+      {
+        contextMenu.show &&
         <ContextMenu context={contextMenu} closeMenu={closeMenu}>
           <div className="flex flex-col gap-2 rounded-md bg-white p-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
             <button className="hover:bg-slate-100 p-1 rounded-md flex">
-              Eliminar
+              Archive
             </button>
             <button className="hover:bg-slate-100 p-1 rounded-md flex">
-              Bloquear
+              Block
             </button>
             <button className="hover:bg-slate-100 p-1 rounded-md flex">
-              Archivar
+              Delete
             </button>
           </div>
         </ContextMenu>

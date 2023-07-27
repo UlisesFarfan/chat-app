@@ -6,7 +6,7 @@ interface LabelContent {
   htmlFor: string;
 }
 
-export default function Label({ className, content, htmlFor }: LabelContent) {
+export default function Label({ className, content, htmlFor }: LabelContent): JSX.Element {
   return (
     <label className={className ? className : ""} htmlFor={htmlFor}>
       {content}

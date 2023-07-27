@@ -30,6 +30,10 @@ module.exports = {
       },
       maxWidth: {
         '1/2': '50%',
+      },
+      minWidth: {
+        '4': '3.5rem',
+        '96': '24rem'
       }
     },
   },

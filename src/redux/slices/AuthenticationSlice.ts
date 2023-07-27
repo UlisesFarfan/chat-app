@@ -7,6 +7,7 @@ import {
   RefreshAsync,
   SignupAsync
 } from "../async/authAsync";
+import toast from 'react-hot-toast';
 
 const initialState = {
   authUser: null,
@@ -16,7 +17,7 @@ const initialState = {
   error: false,
 } as AuthState;
 
-export const AuthSlice:any = createSlice({
+export const AuthSlice: any = createSlice({
   name: "auth",
   initialState,
   reducers: {
@@ -48,6 +49,7 @@ export const AuthSlice:any = createSlice({
     });
     builder.addCase(LoginAsync.rejected, (state, { payload }) => {
       state.error = payload as string;
+      toast.error(payload as string, { position: "top-right" })
       state.loading = false;
     });
     builder.addCase(SignupAsync.rejected, (state, { payload }) => {
@@ -90,5 +92,5 @@ export const AuthSlice:any = createSlice({
     });
   },
 });
-export const { setAuthUser } = AuthSlice.actions;
+export const { setAuthUser, clearErrors } = AuthSlice.actions;
 export default AuthSlice.reducer;

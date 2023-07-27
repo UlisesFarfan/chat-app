@@ -1,4 +1,8 @@
 export interface PropsGet {
-  headers: string;
-  id: string
+  token?: string;
+  id?: string;
+  signal?: AbortSignal;
+  userName?: string;
+  userId?: string;
+  secUserId?: string;
 }

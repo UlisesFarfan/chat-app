@@ -1,6 +1,6 @@
 import { AiOutlineArrowLeft, AiOutlineSend } from 'react-icons/ai'
-import Message from './Message'
-import InputMessage from './Inputs/InputMessage'
+import Message from './Message';
+import InputMessage from './Inputs/InputMessage';
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
 import { useMessageText } from '../hooks/useValidFormik';
 import { useEffect, useRef, useState } from 'react';
@@ -8,6 +8,11 @@ import { postMessage } from '../redux/async/chatsAsync';
 import { chatName, chatWho, chatOtherUser } from '../utils/utils';
 import { PropsMessage } from "../interfaces/Chat/chat.interface";
 import Loading from './Loading';
+import { toast } from 'react-hot-toast';
+import data from '@emoji-mart/data'
+import Picker from '@emoji-mart/react'
+import { BsEmojiSmile } from 'react-icons/bs';
+import { useOnClickOutSide } from '../hooks/useOnClickOutSide';
 
 export default function Chat() {
 
@@ -21,35 +26,57 @@ export default function Chat() {
   });
 
   const dispatch = useAppDispatch();
-  const chat = useAppSelector(state => state.chat.currentChat)
-  const auth = useAppSelector(state => state.auth)
-  const socket = useAppSelector(state => state.socket.socketIo)
-  const scrollRef = useRef<any>()
-
+  const chat = useAppSelector(state => state.chat.currentChat);
+  const auth = useAppSelector(state => state.auth);
+  const socket = useAppSelector(state => state.socket.socketIo);
+  const scrollRef = useRef<any>(null);
+  const ref = useRef<any>(null)
+  const [showEmoji, setShowEmoji] = useState(false);
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [chat])
-
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chat]);
   const handleSubmitMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const message: PropsMessage = {
       message: values.text,
       user: auth.authUser._id,
-      chatId: chat._id
+      chatId: chat._id,
+      date: new Date(),
     }
     setValues({
       text: ""
     })
-    //    if (values.text === "") return;
-    socket.emit("sendMessage", {
-      message: values.text,
-      user: auth.authUser._id,
-      name: auth.authUser.name,
-      chatId: chat._id,
-      otherUser: chatOtherUser(chat.users, auth.authUser)
-    })
-    dispatch(postMessage({ headers: auth.accessToken, body: message }))
+    if (values.text === "") return;
+    dispatch(postMessage({ token: auth.accessToken, body: message }))
+      .unwrap()
+      .then((res: any) => {
+        socket.emit("sendMessage", {
+          message: values.text,
+          user: auth.authUser._id,
+          name: auth.authUser.name,
+          chatId: chat._id,
+          date: new Date(),
+          otherUser: chatOtherUser(chat.users, auth.authUser)
+        })
+      })
+      .catch((error: any) => {
+        toast.error("Message not sent", {
+          position: "top-right"
+        })
+      })
   };
+  // add emojis
+  const addEmoji = (e: any) => {
+    const sym = e.unified.split("_");
+    const codeArray: any = [];
+    sym.forEach((el: any) => codeArray.push("0x" + el));
+    let emoji = String.fromCodePoint(...codeArray);
+    setValues({
+      text: values.text + emoji
+    });
+  };
+  // Close Emojis
+  useOnClickOutSide(ref, () => setShowEmoji(false));
 
   return (
     <div className="flex flex-col w-full">
@@ -81,7 +108,13 @@ export default function Chat() {
             chat.messagesId.map((el: any, index: number) => {
               return (
                 <div ref={scrollRef} key={index}>
-                  <Message message={el.message} user={chatWho(el.user, auth.authUser, chatName(chat.users, auth.authUser))} />
+                  <Message
+                    message={el.message}
+                    date={el.date}
+                    user={chatWho(el.user, auth.authUser, chatName(chat.users, auth.authUser))}
+                    messageId={el._id}
+                    _delete={el._delete}
+                  />
                 </div>
               )
             })
@@ -89,8 +122,10 @@ export default function Chat() {
             <Loading />
         }
       </div>
-      <form className="flex px-5 py-3" onSubmit={handleSubmitMessage}>
-        <div className="w-full h-12 flex justify-between px-3 items-center border border-transparent bg-slate-50 focus-within:border-slate-300 rounded-lg">
+      <div className="flex px-5 py-3">
+        <form className="w-full h-12 flex relative justify-between px-3 items-center border border-transparent bg-slate-50 focus-within:border-slate-300 rounded-lg"
+          onSubmit={handleSubmitMessage}
+        >
           <InputMessage
             id="text"
             placeholder="Type your message"
@@ -98,11 +133,31 @@ export default function Chat() {
             onChange={handleChange}
             initialValue={values?.text ? values?.text : ""}
           />
+          <span
+            className="cursor-pointer relative text-slate-500 hover:text-slate-300"
+          >
+            <BsEmojiSmile
+              onClick={() => setShowEmoji(!showEmoji)}
+              className="h-6 w-6 mr-4"
+            />
+            {showEmoji && (
+              <div className="absolute bottom-[150%] right-4" ref={ref}>
+                <Picker
+                  data={data}
+                  emojiSize={20}
+                  emojiButtonSize={28}
+                  onEmojiSelect={addEmoji}
+                  maxFrequentRows={0}
+                  theme="light"
+                />
+              </div>
+            )}
+          </span>
           <button type='submit'>
-            <AiOutlineSend className="h-8 w-8 text-slate-500" />
+            <AiOutlineSend className="h-8 w-8 text-slate-500 hover:text-slate-300" />
           </button>
-        </div>
-      </form >
+        </form>
+      </div >
     </div >
   )
-}
+};

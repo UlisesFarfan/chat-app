@@ -24,6 +24,7 @@ export default function Layout() {
   const dispatch = useAppDispatch();
   const params = useLocation()
   const { authUser, logged }: any = useAppSelector((state: any) => state.auth);
+  const socket = useAppSelector(state => state.socket.socketIo);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [navigation, setNavigation] = useState([
     {
@@ -57,15 +58,13 @@ export default function Layout() {
       .unwrap()
       .then(() => { })
       .catch((err: any) => { });
-    dispatch(logoutSocket(authUser._id))
+    console.log("logout")
+    socket.emit("logout", authUser._id);
+    location.reload()
   };
 
   return (
     <div className="flex flex-col h-screen">
-      <Toaster
-        position="bottom-right"
-
-      />
       <Transition.Root show={sidebarOpen} as={Fragment}>
         <Dialog
           as="div"
@@ -267,9 +266,7 @@ export default function Layout() {
                             Perfile
                           </button>
                           <button
-                            onClick={() => {
-                              handleLogout()
-                            }}
+                            onClick={() => handleLogout()}
                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full"
                           >
                             Logout

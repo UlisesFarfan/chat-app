@@ -7,7 +7,7 @@ import { useValidSignUp } from "../../hooks/useValidFormik";
 import { SignupAsync } from "../../redux/async/authAsync";
 import { setAuthUser } from "../../redux/slices/AuthenticationSlice";
 import Buttons from "../../components/Buttons";
-import InputText from "../../components/Inputs/InputText";
+import InputText from "../../components/Inputs/InputSearch";
 import InputName from "../../components/Inputs/InputName";
 
 export default function Register() {

@@ -1,6 +1,6 @@
 export default function Profile() {
   return (
-    <div className="bg-gray-200 font-sans h-screen w-full flex flex-row justify-center items-center">
+    <div className="bg-gray-200 font-sans flex flex-row justify-center h-56">
       <div className="card w-96 mx-auto bg-white rounded-md shadow-xl hover:shadow">
         <div className="text-center mt-6 text-3xl font-medium">Ajo Alex</div>
         <div className="px-6 text-center mt-2 font-light text-sm">

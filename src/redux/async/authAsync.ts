@@ -90,11 +90,11 @@ export const LogoutAsync = createAsyncThunk("auth/logout", async () => {
 
 export const RefreshAsync = createAsyncThunk("auth/refresh", async () => {
   try {
+    console.log("refresh")
     const { data } = await axios.post("/auth/token/refresh", {
       refresh_token: localStorage.getItem("refresh_token") || "none",
       grant_type: "refresh_token",
     });
-
     return data;
   } catch (error: any) {
     localStorage.removeItem("refresh_token");

@@ -5,32 +5,26 @@ import { UpdateUsersConects, logoutSocket } from "../async/socketAsync";
 
 interface SocketSliceState {
   socketIo: any;
-  socketIoUsers: any;
-  userChat: any;
+  isConnected: boolean;
 }
 
 const initialState: SocketSliceState = {
   socketIo: io(import.meta.env.VITE_SOCKET_ENDPOINT),
-  socketIoUsers: null,
-  userChat: null,
+  isConnected: false,
 };
 
 export const socketIo: any = createSlice({
   name: "socket",
   initialState,
-  reducers: {},
+  reducers: {
+    handleConnected: (state) => {
+      state.isConnected = true
+    }
+  },
   extraReducers: (builder) => {
-    builder.addCase(UpdateUsersConects.fulfilled,
-      (state: SocketSliceState, action: PayloadAction<any>) => {
-        state.socketIoUsers = action.payload
-      }
-    );
-    builder.addCase(logoutSocket.fulfilled,
-      (state: SocketSliceState, action: PayloadAction<any>) => {
-        state.socketIo.emit("logout", action.payload)
-      }
-    );
   },
 });
+
+export const { handleConnected } = socketIo.actions;
 
 export default socketIo.reducer;

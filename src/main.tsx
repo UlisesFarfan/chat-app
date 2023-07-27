@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import store from "./redux/store/store";
 import reportWebVitals from "./reportWebVitals";
 import axios from "axios";
+import { Toaster } from "react-hot-toast";
 import "./index.css";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_ENDPOINT;
@@ -14,6 +15,7 @@ root.render(
   <Provider store={store}>
     <Router>
       <App />
+      <Toaster />
     </Router>
   </Provider>
 );
