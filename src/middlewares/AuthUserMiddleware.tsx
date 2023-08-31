@@ -2,7 +2,6 @@ import { Suspense, useCallback, useEffect, useMemo } from "react";
 import { Await, Outlet } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
 import { RefreshAsync } from "../redux/async/authAsync";
-import Loading from "../assets/loading.svg"
 
 const AuthUserMiddleware = (): any => {
   const { authUser, loading }: any = useAppSelector((state) => state.auth);
@@ -23,13 +22,11 @@ const AuthUserMiddleware = (): any => {
   }, [authUser]);
 
   return (
-    <Suspense fallback={<>
-
-    </>}>
+    <Suspense>
       <Await
         resolve={authUser}
         children={() =>
-          loading === true ? <>{Loading}</> : <Outlet />
+          loading === true ? <>Loading</> : <Outlet />
         }
       />
     </Suspense>
