@@ -1,8 +1,7 @@
-import Helper from "../Helper";
 import Label from "../Label";
 import { InputGnrlProps } from "../../interfaces/Inputs/inputs.interface";
 
-function InputName({
+function InputSettingsTextArea({
   className,
   disabled,
   helper,
@@ -17,10 +16,8 @@ function InputName({
   return (
     <div className="flex flex-col items-start w-full relative">
       {label && <Label content={label} htmlFor={id} />}
-      <input
-        type="text"
+      <textarea
         placeholder={placeholder}
-        pattern="\S+.*"
         required
         id={id}
         onBlur={onBlur ? onBlur : undefined}
@@ -28,8 +25,8 @@ function InputName({
         disabled={disabled ? disabled : false}
         readOnly={readonly ? readonly : false}
         value={initialValue}
-        className={`p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${className?.includes("is-invalid") ? "text-red-600" : ""
-          }`}
+        className={`p-1 w-full border-b-2 bg-slate-50 border-indigo-500 rounded-t-md focus:outline-none
+        ${className?.includes("is-invalid") ? "text-red-600" : ""}`}
         tabIndex={
           (className?.match(/readonly-text-plain/) && readonly === true) ||
             readonly === true ||
@@ -38,10 +35,11 @@ function InputName({
             : 0
         }
         autoComplete="off"
+        rows={5}
+        cols={5}
       />
-      {helper && <Helper helper={helper} />}
     </div>
   );
 }
 
-export default InputName;
+export default InputSettingsTextArea;

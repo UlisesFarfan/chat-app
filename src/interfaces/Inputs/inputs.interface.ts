@@ -5,6 +5,7 @@ export interface InputGnrlProps {
   className?: string;
   disabled?: boolean;
   helper?: formikError;
+  type?: string;
   onBlur?: {
     (e: React.FocusEvent<any, Element>): void;
     <T = any>(fieldOrEvent: T): T extends string ? (e: any) => void : void;

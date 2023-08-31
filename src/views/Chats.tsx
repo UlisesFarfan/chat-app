@@ -1,42 +1,52 @@
-import { NavLink, Outlet } from "react-router-dom";
 import ChatItem from "../components/ChatItem";
-import { getChatsById } from "../redux/async/chatsAsync";
-import { clearCurrentChat } from "../redux/slices/ChatsSlice";
+import { getChatsById, getContactBlocked } from "../redux/async/socialAsync";
+import { clearCurrentChat } from "../redux/slices/SocialSlice";
 import { useAppSelector, useAppDispatch } from "../hooks/useRedux";
 import { useEffect } from "react";
-import { getAllChatsByUserId } from "../redux/async/chatsAsync";
-import { chatName } from "../utils/utils";
+import { getAllChatsByUserId } from "../redux/async/socialAsync";
+import { chatName, chatOtherUser } from "../utils/utils";
 import Loading from "../components/Loading";
 import { ChatInterface } from "../interfaces/Chat/chat.interface";
 import ChatListHeader from "../components/ChatListHeader";
-import Sadface from "../assets/sadface.svg"
 import Chat from "../components/Chat";
 
-export default function Message() {
+export default function Chats() {
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const auth = useAppSelector((state) => state.auth);
-  const chat = useAppSelector(state => state.chat)
+  const { chats, currentChat } = useAppSelector(state => state.social);
 
   useEffect(() => {
-    dispatch(getAllChatsByUserId({ token: auth.accessToken, id: auth.authUser._id }))
-  }, [])
+    dispatch(getAllChatsByUserId({ token: auth.accessToken, id: auth.authUser._id }));
+    dispatch(clearCurrentChat());
+    dispatch(getContactBlocked({
+      userId: auth.authUser._id,
+      token: auth.accessToken
+    }));
+  }, []);
 
   const hableChatSelect = (el: ChatInterface) => {
-    dispatch(clearCurrentChat())
-    dispatch(getChatsById({ token: auth.accessToken, id: el._id }))
-  }
+    dispatch(clearCurrentChat());
+    dispatch(getChatsById({ token: auth.accessToken, id: el._id }));
+  };
 
   return (
-    <div className="h-full flex lg:ml-52 ">
-      <div className="flex flex-col w-80 bg-slate-50 border-r">
+    <div className="h-full flex ml-16">
+      <div className={`flex flex-col w-80 bg-white border-r w-full md:w-[14rem] md:min-w-[14rem] md:max-w-[14rem]
+      ${currentChat
+          ?
+          "hidden md:flex"
+          :
+          ""
+        }
+      `}>
         <ChatListHeader token={auth.accessToken} id={auth.authUser._id} />
-        {chat.chats ?
-          chat.chats.length === 0 ?
+        {chats ?
+          chats.length === 0 ?
             <div className="flex justify-center items-center flex-col pt-2">
               <span>you have no chats</span>
             </div>
-            : chat.chats?.map((el: ChatInterface, index: number) =>
+            : chats?.map((el: ChatInterface, index: number) =>
               auth.authUser._id === el._id ?
                 null
                 :
@@ -49,6 +59,8 @@ export default function Message() {
                     hableChatSelect(el)
                   }}
                   key={index}
+                  user={chatOtherUser(el.users, auth.authUser)}
+                  lastMessage={el.lastMessage}
                 />
             )
           :
@@ -57,9 +69,14 @@ export default function Message() {
           </div>
         }
       </div>
-      <div className="w-full h-full flex">
+      <div className={`w-full h-full flex ${currentChat
+        ?
+        "flex"
+        :
+        "hidden md:flex"
+        }`}>
         {
-          chat.currentChat ?
+          currentChat ?
             <Chat />
             :
             null
@@ -67,5 +84,5 @@ export default function Message() {
       </div>
     </div>
   );
-}
+};
 

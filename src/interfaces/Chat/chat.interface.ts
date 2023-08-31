@@ -25,6 +25,7 @@ export interface ChatInterface {
   users: Array<UserChat>;
   nessagesId: Array<Object>;
   messageToView: boolean;
+  lastMessage: MessageProps;
 };
 
 export interface ChatItemProps {
@@ -33,6 +34,8 @@ export interface ChatItemProps {
   newMessage: boolean;
   online: boolean;
   onClick: () => void;
+  lastMessage: MessageProps;
+  user: string;
 };
 
 export interface ContextProps {

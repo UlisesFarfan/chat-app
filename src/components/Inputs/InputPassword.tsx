@@ -52,6 +52,7 @@ function InputPassword({
                 ? -1
                 : 0
             }
+            autoComplete="off"
           />
           <div onClick={switchShown} className="flex items-center p-3 border border-gray-300 rounded-md">
             {shown ? (

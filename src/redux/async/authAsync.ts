@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { UserLogin } from "../../interfaces/Auth/async.interface";
 import { UserSignup } from "../../interfaces/Auth/authSlice.interface";
+import { PropsGet } from "../../interfaces/get";
 
 export const LoginAsync = createAsyncThunk(
   "auth/login",
@@ -114,6 +115,45 @@ export const getAuthUserAsync = createAsyncThunk(
       return data;
     } catch (error: any) {
       throw error;
+    }
+  }
+);
+
+export const upDateInfo = createAsyncThunk(
+  "upDateInfo",
+  async ({ token, body }: PropsGet, thunkApi) => {
+    try {
+      const { data } = await axios({
+        method: "POST",
+        url: import.meta.env.VITE_API_ENDPOINT + "/user/update-info/",
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        data: body
+      });
+      return data;
+    } catch (error: any) {
+      throw thunkApi.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteMyAccount = createAsyncThunk(
+  "deleteMyAccount",
+  async ({ token, userId, email }: PropsGet, thunkApi) => {
+    try {
+      const { data } = await axios({
+        method: "DELETE",
+        url: import.meta.env.VITE_API_ENDPOINT + `/user/delete-user/${userId}?email=${email}`,
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`
+        },
+      });
+      return data
+    } catch (error: any) {
+      throw thunkApi.rejectWithValue(error.message);
     }
   }
 );

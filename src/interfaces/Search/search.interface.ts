@@ -1,9 +1,15 @@
-export enum SearchType {
+export enum SearchWhere {
   CHAT,
   CONTACT,
 }
 
+export enum SearchType {
+  ARCHIVE,
+  UNARCHIVE
+}
+
 export interface Search {
-  type: SearchType;
+  where: SearchWhere;
   placeholder: string;
+  type?: SearchType;
 }

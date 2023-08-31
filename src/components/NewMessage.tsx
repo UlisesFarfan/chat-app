@@ -1,13 +1,22 @@
 import { NavLink } from "react-router-dom";
+import { useAppSelector } from "../hooks/useRedux";
 
 export default function NewMessage({ t, message, newChat, toast, handleChatSelect }: any) {
+  const { chats, archive_chats } = useAppSelector(state => state.social)
+  let redirec = "/"
+  chats.map((el: any) => {
+    if (el._id === message.chatId) redirec = "/"
+  })
+  archive_chats.map((el: any) => {
+    if (el._id === message.chatId) redirec = "/archive"
+  })
   return (
     <div
       className={`${t.visible ? 'animate-enter' : 'animate-leave'
         } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
     >
       <NavLink
-        to={`/chats`}
+        to={redirec}
         className="flex-1 w-0 p-4"
         onClick={() => handleChatSelect(message)}
       >

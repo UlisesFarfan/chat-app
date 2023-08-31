@@ -5,7 +5,9 @@ import {
   LogoutAsync,
   getAuthUserAsync,
   RefreshAsync,
-  SignupAsync
+  SignupAsync,
+  upDateInfo,
+  deleteMyAccount
 } from "../async/authAsync";
 import toast from 'react-hot-toast';
 
@@ -89,6 +91,13 @@ export const AuthSlice: any = createSlice({
       state.authUser = null;
       state.logged = false;
       state.loading = false;
+    });
+    builder.addCase(upDateInfo.fulfilled, (state, { payload }) => {
+      state.authUser = payload;
+    });
+    builder.addCase(deleteMyAccount.fulfilled, (state, { payload }) => {
+      localStorage.clear()
+      location.reload()
     });
   },
 });

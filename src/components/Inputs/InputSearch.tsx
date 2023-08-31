@@ -24,6 +24,7 @@ export default function InputSearch({
         disabled={disabled ? disabled : false}
         value={initialValue}
         className="w-full px-1 bg-transparent outline-none placeholder:text-slate-400"
+        autoComplete="off"
       />
     </div>
   );

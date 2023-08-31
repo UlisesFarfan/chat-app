@@ -1,19 +1,15 @@
-import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import { Routes, Route } from 'react-router-dom'
 import Layout from './layouts/Layout'
-import Message from './views/Message'
-import Chat from './components/Chat'
 import Login from './views/authviews/Login'
 import AuthUserMiddleware from './middlewares/AuthUserMiddleware'
 import AuthenticatedMiddleware from './middlewares/AuthenticatedMiddleware'
 import AuthenticationLayout from './layouts/AuthenticationLayout'
 import LoggedMiddleware from './middlewares/LoggedMiddleware'
-import Contacts from './views/Contacts'
-import Dashboard from './views/Dashboard'
 import SocketIoMiddleware from './middlewares/SocketIoMiddleware'
 import Register from './views/authviews/Register'
-import Profile from './components/Profile'
+import Chats from './views/Chats'
+import ArchiveChats from './views/ArchiveChats'
 
 function App() {
 
@@ -24,9 +20,8 @@ function App() {
         <Route element={<AuthenticatedMiddleware />}>
           <Route element={<SocketIoMiddleware />}>
             <Route element={<Layout />}>
-              <Route path="/chats" element={<Message />} />
-              <Route path="/contacts" element={<Contacts />} />
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/" element={<Chats />} />
+              <Route path="/archive" element={<ArchiveChats />} />
             </Route>
           </Route>
         </Route>

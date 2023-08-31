@@ -22,7 +22,14 @@ export const useValidSignUp = (initialValues?: any) => {
       .oneOf([yup.ref("password")], "The passwords do not match."),
     name: yup
       .string()
+      .min(1)
+      .max(20)
       .required("Name is required."),
+    tag: yup
+      .string()
+      .min(1)
+      .max(15)
+      .required("Tag is required."),
   });
 
   const formik = useFormik({
@@ -149,5 +156,41 @@ export const useText = (initialValues?: any) => {
     validateField: formik.validateField,
   };
 };
+
+export const useSettingsProfile = (initialValues?: any) => {
+  const validationSchema = yup.object({
+    name: yup
+      .string(),
+    description: yup
+      .string(),
+    tag: yup
+      .string(),
+  });
+
+  const formik = useFormik({
+    initialValues: initialValues,
+    validationSchema: validationSchema,
+    onSubmit: (values, { setSubmitting, setValues }) => {
+      setSubmitting(false);
+    },
+  });
+
+  // true
+  return {
+    handleSubmit: formik.handleSubmit,
+    values: formik.values,
+    handleBlur: formik.handleBlur,
+    handleChange: formik.handleChange,
+    errors: formik.errors,
+    isSubmitting: formik.isSubmitting,
+    isValid: formik.isValid,
+    actions: formik.setSubmitting,
+    touched: formik.touched,
+    setValues: formik.setValues,
+    setFieldValue: formik.setFieldValue,
+    validateField: formik.validateField,
+  };
+};
+
 
 export default useFormik;

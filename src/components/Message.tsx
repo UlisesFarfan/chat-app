@@ -3,7 +3,7 @@ import { ContextProps, MessageProps } from "../interfaces/Chat/chat.interface"
 import ContextMenu from "./ContextMenu";
 import { toast } from "react-hot-toast";
 import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
-import { deleteMessage } from "../redux/async/chatsAsync";
+import { deleteMessage } from "../redux/async/socialAsync";
 const initialValue = { x: 0, y: 0, show: false }
 export default function Message({
   message,
@@ -29,11 +29,10 @@ export default function Message({
 
   return (
     <>
-      <div className={`mt-3 ${user !== "Me" ? "w-full flex flex-start" : "w-full flex justify-end mt-3"}`}>
+      <div className={`mt-3 bg-transparent ${user !== "Me" ? "w-full flex flex-start" : "w-full flex justify-end mt-3"}`}>
         <div className="max-w-1/2">
           <div className="flex items-center">
-            <p className={`font-semibold flex w-full text-sm text-slate-600 ${user === "Me" && "justify-end"}`
-            }
+            <p className={`font-semibold flex w-full text-sm text-slate-600 ${user === "Me" && "justify-end"}`}
             >
               {user}
             </p>

@@ -26,6 +26,16 @@ const chatOtherUser = (users: any, user: any) => {
   return nameChat
 };
 
+const chatOtherUserTag = (users: any, user: any) => {
+  let nameChat = "";
+  users.forEach((el: any) => {
+    if (el._id !== user._id) {
+      nameChat = el.tag;
+    }
+  });
+  return nameChat
+};
+
 const BubbleSort = (array: any) => {
   for (var i = 0; i <= array.length - 1; i++) {
     for (var j = 0; j < (array.length - i - 1); j++) {
@@ -40,4 +50,4 @@ const BubbleSort = (array: any) => {
 }
 
 
-export { chatName, chatWho, chatOtherUser, BubbleSort }
+export { chatName, chatWho, chatOtherUser, BubbleSort, chatOtherUserTag }

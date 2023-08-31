@@ -1,5 +1,4 @@
-import { PayloadAction } from "@reduxjs/toolkit";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { io } from "socket.io-client";
 import { UpdateUsersConects, logoutSocket } from "../async/socketAsync";
 

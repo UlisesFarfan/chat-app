@@ -9,6 +9,7 @@ import { setAuthUser } from "../../redux/slices/AuthenticationSlice";
 import Buttons from "../../components/Buttons";
 import InputText from "../../components/Inputs/InputSearch";
 import InputName from "../../components/Inputs/InputName";
+import { toast } from "react-hot-toast";
 
 export default function Register() {
 
@@ -24,7 +25,8 @@ export default function Register() {
     email: "",
     password: "",
     changepassword: "",
-    name: ""
+    name: "",
+    tag: "",
   });
 
   const navigate = useNavigate();
@@ -32,14 +34,16 @@ export default function Register() {
   const dispatch = useAppDispatch();
 
   function isValid() {
-    return !errors?.email && !errors?.password;
+    return !errors?.email && !errors?.password && !errors?.name;
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      await dispatch(SignupAsync(values))
-    } catch (error: any) { }
+    await dispatch(SignupAsync(values))
+      .unwrap()
+      .catch((e: any) => {
+        toast.error(e)
+      })
   };
 
   useEffect(() => {
@@ -56,6 +60,15 @@ export default function Register() {
           onChange={handleChange}
           helper={errors.name ? errors.name : ""}
           initialValue={values?.name ? values?.name : ""}
+        />
+        <InputName
+          id="tag"
+          placeholder="Tag"
+          className={touched?.tag && errors?.tag ? "is-invalid" : ""}
+          onBlur={handleBlur}
+          onChange={handleChange}
+          helper={errors.tag ? errors.tag : ""}
+          initialValue={values?.tag ? values?.tag : ""}
         />
         <InputEmail
           id="email"
